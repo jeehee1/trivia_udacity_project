@@ -8,6 +8,16 @@ from models import setup_db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
 
+def paginate_question(request, question_selection):
+  page = request.args.get('page', 1, type=int)
+  start = (page-1)*QUESTIONS_PER_PAGE
+  end = start + QUESTIONS_PER_PAGE
+
+  questions = [question.format() for question in question_selection]
+  current_questions = questions[start:end]
+
+  return current_questions
+
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
@@ -35,7 +45,7 @@ def create_app(test_config=None):
   Create an endpoint to handle GET requests 
   for all available categories.
   '''
-  
+    
 
   '''
   @TODO: 
@@ -49,7 +59,23 @@ def create_app(test_config=None):
   ten questions per page and pagination at the bottom of the screen for three pages.
   Clicking on the page numbers should update the questions. 
   '''
+  @app.route('/questions', methods=['GET'])
+  def get_question_list():
+    question_selection = Question.query.order_by(Question.id).all()
+    list_of_questions = paginate_question(request, question_selection)
+    categories = Category.query.order_by(Category.id).all()
 
+    if len(list_of_questions) == 0:
+      abort(404)
+    else:
+      return jsonify({
+        'success' : True,
+        'list_of_questions' : list_of_questions,
+        'total_questions' : len(question_selection),
+        'current_category' : None,
+        'categories' : [category.format() for category in categories]
+      })
+  
   '''
   @TODO: 
   Create an endpoint to DELETE question using a question ID. 
