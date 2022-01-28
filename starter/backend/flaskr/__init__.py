@@ -112,6 +112,33 @@ def create_app(test_config=None):
   the form will clear and the question will appear at the end of the last page
   of the questions list in the "List" tab.  
   '''
+  @app.route('/questions', methods=['POST'])
+  def create_new_question():
+    body = request.get_json()
+    new_question = body.get('question', None)
+    new_answer = body.get('answer', None)
+    new_category = body.get('category', None)
+    new_difficulty = body.get('difficulty', None)
+    try:
+      if 'question' in body and 'answer' in body:
+        question = Question(question=new_question, answer=new_answer, \
+          category=new_category, difficulty=new_difficulty)
+        question.insert()
+
+        question_selection = Question.query.order_by(Question.id.desc()).all()
+        list_of_questions = paginate_question(request, question_selection)
+
+        return jsonify({
+          'success' : True,
+          'created_id' : question.id,
+          'questions' : list_of_questions,
+          'total_questions' : len(question_selection)
+        })
+      else:
+        abort(400)
+
+    except:
+      abort(422)
 
   '''
   @TODO: 
