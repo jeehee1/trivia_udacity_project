@@ -124,15 +124,20 @@ def create_app(test_config=None):
         question = Question(question=new_question, answer=new_answer, \
           category=new_category, difficulty=new_difficulty)
         question.insert()
-
-        question_selection = Question.query.order_by(Question.id.desc()).all()
-        list_of_questions = paginate_question(request, question_selection)
+        # all_categories = []
+        categories = Category.query.order_by(Category.id).all()
+        all_categories = []
+        for category in categories:
+          all_categories.append(category.type)
+        # distinct_questions = Question.query.distinct(Question.category).all()
+        # for distinct_question in distinct_questions:
+        #   all_categories.append(distinct_question.category)
 
         return jsonify({
           'success' : True,
-          'created_id' : question.id,
-          'questions' : list_of_questions,
-          'total_questions' : len(question_selection)
+          'question_id' : question.id,
+          'question_category' : question.category,
+          'all_categories' : all_categories
         })
       else:
         abort(400)
