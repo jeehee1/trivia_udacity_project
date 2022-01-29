@@ -119,6 +119,7 @@ def create_app(test_config=None):
     new_answer = body.get('answer', None)
     new_category = body.get('category', None)
     new_difficulty = body.get('difficulty', None)
+    search_term = body.get('search_term', None)
     try:
       if 'question' in body and 'answer' in body:
         question = Question(question=new_question, answer=new_answer, \
@@ -138,6 +139,13 @@ def create_app(test_config=None):
           'question_id' : question.id,
           'question_category' : question.category,
           'all_categories' : all_categories
+        })
+
+      if 'search_term' in body:
+        questions = Question.query.filter(Question.question.ilike('%'+search_term+'%')).all()
+        return jsonify({
+          'success' : True,
+          'search_questions' : [question.format() for question in questions]
         })
       else:
         abort(400)
