@@ -173,6 +173,17 @@ def create_app(test_config=None):
   category to be shown. 
   '''
 
+  @app.route('/questions/<int:category_id>')
+  def get_question_based_on_category(category_id):
+    questions = Question.query.filter(Question.category==category_id).all()
+    if questions is None:
+      abort(404)
+    else:
+      return jsonify({
+        'success' : True,
+        'question' : [question.format() for question in questions]
+      })
+
 
   '''
   @TODO: 
