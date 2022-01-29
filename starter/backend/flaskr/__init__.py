@@ -119,7 +119,6 @@ def create_app(test_config=None):
     new_answer = body.get('answer', None)
     new_category = body.get('category', None)
     new_difficulty = body.get('difficulty', None)
-    search_term = body.get('search_term', None)
     try:
       if 'question' in body and 'answer' in body:
         question = Question(question=new_question, answer=new_answer, \
@@ -131,13 +130,6 @@ def create_app(test_config=None):
           'question_id' : question.id,
           'question_category' : question.category,
               })
-
-      if 'search_term' in body:
-        questions = Question.query.filter(Question.question.ilike('%'+search_term+'%')).all()
-        return jsonify({
-          'success' : True,
-          'search_questions' : [question.format() for question in questions]
-        })
       else:
         abort(400)
 
@@ -154,6 +146,18 @@ def create_app(test_config=None):
   only question that include that string within their question. 
   Try using the word "title" to start. 
   '''
+  @app.route('/questions/search', methods=['POST'])
+  def get_questions_using_searchterm():
+    body = request.get_json()
+    search_term = body.get('search_term', None)
+    questions = Question.query.filter(Question.question.ilike('%'+search_term+'%')).all()
+    if questions is None:
+      abort(404)
+    else:
+      return jsonify({
+        'success' : True,
+        'search_questions' : [question.format() for question in questions]
+      })
 
   '''
   @TODO: 
