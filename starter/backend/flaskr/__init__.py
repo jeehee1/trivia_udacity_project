@@ -4,6 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
 
+from sqlalchemy import func
+
 from models import setup_db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
@@ -191,13 +193,71 @@ def create_app(test_config=None):
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not. 
   '''
+  @app.route('/questions/play', methods=['POST'])
+  def get_questions_randomly():
+    body = request.get_json()
+    current_category = body.get('current_category', None)
+    previous_questions = body.get('previous_questions', None)
+    questions = Question.query.filter(Question.category==current_category).order_by(func.random()).all()
+    selected_questions =[]
+
+    if len(questions)==0:
+      abort(404)
+
+    for question in questions:
+      if question.id not in previous_questions:
+        selected_questions.append(question.format())
+
+    if len(selected_questions) != 0:
+      return jsonify({
+        'success' : True,
+        'previous_questions' : previous_questions,
+        'questions_for_quiz' : selected_questions
+      })
+
+    else:
+      print('there is no question anymore!')
+      abort(404)
+
 
   '''
   @TODO: 
   Create error handlers for all expected errors 
   including 404 and 422. 
   '''
+
+  @app.errorhandler(404)
+  def not_found(error):
+    return jsonify({
+      'success' : False,
+      'error' : 404,
+      'message' : 'Not Found'
+    }), 404
+
+  @app.errorhandler(405)
+  def method_not_allowed(error):
+    return jsonify({
+      'success' : True,
+      'error' : 405,
+      'message' : 'Method Not Allowed'
+    })
+
+  @app.route(422)
+  def unprocessible(error):
+    return jsonify({
+      'success' : True,
+      'error' : 422,
+      'message' : 'Unprocessable'
+    })
   
+  @app.route(400)
+  def bad_request(error):
+    return jsonify({
+      'success' : False,
+      'error' : 400,
+      'message' : 'Bad Request'
+    })
+
   return app
 
     
