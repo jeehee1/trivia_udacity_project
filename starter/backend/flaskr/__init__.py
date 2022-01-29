@@ -125,21 +125,12 @@ def create_app(test_config=None):
         question = Question(question=new_question, answer=new_answer, \
           category=new_category, difficulty=new_difficulty)
         question.insert()
-        # all_categories = []
-        categories = Category.query.order_by(Category.id).all()
-        all_categories = []
-        for category in categories:
-          all_categories.append(category.type)
-        # distinct_questions = Question.query.distinct(Question.category).all()
-        # for distinct_question in distinct_questions:
-        #   all_categories.append(distinct_question.category)
 
         return jsonify({
           'success' : True,
           'question_id' : question.id,
           'question_category' : question.category,
-          'all_categories' : all_categories
-        })
+              })
 
       if 'search_term' in body:
         questions = Question.query.filter(Question.question.ilike('%'+search_term+'%')).all()
