@@ -19,6 +19,18 @@ class TriviaTestCase(unittest.TestCase):
         self.database_path = "postgresql://{}:{}@{}/{}".format('postgres', '1231', 'localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
 
+        # self.new_question = {
+        #     'question' : 'What is it called the big clock building in london?',
+        #     'anser' : 'BigBen',
+        #     'category' : "4",
+        #     'difficulty' : 1
+        # }
+
+        # self.previous_questions_info={
+        #     'current_category' : "2",
+        #     'previous_questions' : [41, 42, 43, 44, 45, 46, 47, 48]
+        # }
+
         # binds the app to the current context
         with self.app.app_context():
             self.db = SQLAlchemy()
@@ -39,11 +51,76 @@ class TriviaTestCase(unittest.TestCase):
         res = self.client().get('/questions')
         data = json.loads(res.data)
 
+        self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['list_of_questions']))
         self.assertTrue(data['total_questions'])
         self.assertTrue(len(data['categories']))
         self.assertEqual(data['current_category'], None)
+
+    # def test_get_categories(self):
+    #     res = self.client().get('/categories')
+    #     data = json.loads(res.data)
+
+    #     self.assertEqual(res.status_code, 200)
+    #     self.assertEqual(data['success'], True)
+    #     self.assertTrue(len(data['categories']))
+
+    # def test_delete_a_question_by_question_id(self):
+    #     res = self.client().delete('/questions/50')
+    #     data = json.loads(res.data)
+
+    #     self.assertEqual(res.status_code, 200)
+    #     self.assertEqual(data['success'], True)
+    #     self.assertTrue(data['delete_question_id'])
+
+    # def test_create_a_question(self):
+    #     res = self.client().post('/questions', json=self.new_question)
+    #     data = json.loads(res.data)
+
+    #     self.assertEqual(res.status_code, 200)
+    #     self.assertEqual(data['success'], True)
+    #     self.assertTrue(data['question_id'])
+    #     self.assertTrue(data['question_category'])
+
+    # # def test_422_if_form_is_invalid(self):
+    # #     res = self.client().post('/questions', json)
+
+    # def test_get_questions_by_search_term(self):
+    #     res = self.client().post('/questions/search', json={'search_term':'first'})
+    #     data = json.loads(res.data)
+
+    #     self.assertEqual(res.status_code, 200)
+    #     self.assertEqual(data['success'], True)
+    #     self.assertTrue(len(data['search_questions']))
+
+    # def test_404_sent_requesting_beyond_valid_search(self):
+    #     res = self.client().post('/questions/search', json={'search_term':'kwejflkawj'})
+    #     data = json.loads(res.data)
+
+    #     self.assertEqual(res.status_code, 404)
+    #     self.assertEqual(data['success'], False)
+    #     self.assertEqual(data['message'], 'Not Found')
+
+    # def test_get_question_based_on_category(self):
+    #     res = self.client().get('/questions/3')
+    #     data = json.loads(res.data)
+
+    #     self.assertEqual(res.status_code, 200)
+    #     self.assertEqual(data['success'], True)
+    #     self.assertTrue(len(data['question']))
+
+    # def test_get_questions_randomly(self):
+    #     res = self.client().post('/questions/play', json=self.previous_questions_info)
+    #     data = json.loads(res.data)
+
+    #     self.assertEqual(res.status_code, 200)
+    #     self.assertEqual(data['success'], True)
+    #     self.assertTrue(len(data['previous_questions']))
+    #     self.assertTrue(len(data['selected_questions']))
+
+
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

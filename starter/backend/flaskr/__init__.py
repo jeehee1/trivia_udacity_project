@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
 
+
 from sqlalchemy import func
 
 from models import setup_db, Question, Category
@@ -42,12 +43,6 @@ def create_app(test_config=None):
     )
     return response
 
-  '''
-  @TODO: 
-  Create an endpoint to handle GET requests 
-  for all available categories.
-  '''
-    
 
   '''
   @TODO: 
@@ -77,6 +72,13 @@ def create_app(test_config=None):
         'current_category' : None,
         'categories' : [category.format() for category in categories]
       })
+
+
+  '''
+  @TODO: 
+  Create an endpoint to handle GET requests 
+  for all available categories.
+  '''
 
   @app.route('/categories', methods=['GET'])
   def get_category_list():
