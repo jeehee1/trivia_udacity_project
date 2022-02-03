@@ -26,10 +26,10 @@ class TriviaTestCase(unittest.TestCase):
             'difficulty' : 1
         }
 
-        # self.previous_questions_info={
-        #     'current_category' : "2",
-        #     'previous_questions' : [41, 42, 43, 44, 45, 46, 47, 48]
-        # }
+        self.previous_questions_info={
+            'current_category' : "2",
+            'previous_questions' : [41, 42, 43, 44, 45, 46, 47, 48]
+        }
 
         # binds the app to the current context
         with self.app.app_context():
