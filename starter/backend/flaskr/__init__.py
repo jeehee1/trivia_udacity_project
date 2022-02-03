@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
 
-
 from sqlalchemy import func
 
 from models import setup_db, Question, Category
@@ -244,7 +243,7 @@ def create_app(test_config=None):
       'message' : 'Method Not Allowed'
     })
 
-  @app.route(422)
+  @app.errorhandler(422)
   def unprocessible(error):
     return jsonify({
       'success' : True,
@@ -252,7 +251,7 @@ def create_app(test_config=None):
       'message' : 'Unprocessable'
     })
   
-  @app.route(400)
+  @app.errorhandler(400)
   def bad_request(error):
     return jsonify({
       'success' : False,

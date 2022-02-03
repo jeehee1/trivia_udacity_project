@@ -19,12 +19,12 @@ class TriviaTestCase(unittest.TestCase):
         self.database_path = "postgresql://{}:{}@{}/{}".format('postgres', '1231', 'localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
 
-        # self.new_question = {
-        #     'question' : 'What is it called the big clock building in london?',
-        #     'anser' : 'BigBen',
-        #     'category' : "4",
-        #     'difficulty' : 1
-        # }
+        self.new_question = {
+            'question' : 'What is it called the big clock building in london?',
+            'anser' : 'BigBen',
+            'category' : "4",
+            'difficulty' : 1
+        }
 
         # self.previous_questions_info={
         #     'current_category' : "2",
