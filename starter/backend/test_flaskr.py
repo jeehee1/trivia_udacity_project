@@ -89,15 +89,13 @@ class TriviaTestCase(unittest.TestCase):
     #     res = self.client().post('/questions', json)
     #     data = json.loads(res.data)
 
+    def test_get_questions_by_search_term(self):
+        res = self.client().post('/questions/search', json={'search_term':'first'})
+        data = json.loads(res.data)
 
-
-    # def test_get_questions_by_search_term(self):
-    #     res = self.client().post('/questions/search', json={'search_term':'first'})
-    #     data = json.loads(res.data)
-
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['success'], True)
-    #     self.assertTrue(len(data['search_questions']))
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['search_questions']))
 
     # def test_404_sent_requesting_beyond_valid_search(self):
     #     res = self.client().post('/questions/search', json={'search_term':'kwejflkawj'})
