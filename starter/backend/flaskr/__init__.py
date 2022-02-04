@@ -177,15 +177,15 @@ def create_app(test_config=None):
 
   @app.route('/questions/<int:category_id>')
   def get_question_based_on_category(category_id):
-    questions = Question.query.filter(Question.category==category_id).all()
-    if questions is None:
-      abort(404)
-    else:
+    try:
+      questions = Question.query.filter(Question.category==category_id).all()
+
       return jsonify({
         'success' : True,
-        'question' : [question.format() for question in questions]
+        'questions' : [question.format() for question in questions]
       })
-
+    except:
+      abort(422)
 
   '''
   @TODO: 

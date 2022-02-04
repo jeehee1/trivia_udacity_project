@@ -105,13 +105,13 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Not Found')
 
-    # def test_get_question_based_on_category(self):
-    #     res = self.client().get('/questions/3')
-    #     data = json.loads(res.data)
+    def test_get_question_based_on_category(self):
+        res = self.client().get('/questions/3')
+        data = json.loads(res.data)
 
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['success'], True)
-    #     self.assertTrue(len(data['question']))
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['questions']))
 
     # def test_get_questions_randomly(self):
     #     res = self.client().post('/questions/play', json=self.previous_questions_info)
