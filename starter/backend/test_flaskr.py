@@ -97,13 +97,13 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['search_questions']))
 
-    # def test_404_sent_requesting_beyond_valid_search(self):
-    #     res = self.client().post('/questions/search', json={'search_term':'kwejflkawj'})
-    #     data = json.loads(res.data)
+    def test_404_beyond_valid_page(self):
+        res = self.client().get('/questions?page=1000')
+        data = json.loads(res.data)
 
-    #     self.assertEqual(res.status_code, 404)
-    #     self.assertEqual(data['success'], False)
-    #     self.assertEqual(data['message'], 'Not Found')
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Not Found')
 
     # def test_get_question_based_on_category(self):
     #     res = self.client().get('/questions/3')

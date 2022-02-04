@@ -130,7 +130,7 @@ def create_app(test_config=None):
     new_difficulty = body.get('difficulty', None)
     try:
       if 'question' in body and 'answer' in body:
-        question = Question(question=new_question, answer=new_answer, \
+        question = Question(question=new_question, answer=new_answer,\
           category=new_category, difficulty=new_difficulty)
         question.insert()
 
@@ -159,14 +159,12 @@ def create_app(test_config=None):
   def get_questions_using_searchterm():
     body = request.get_json()
     search_term = body.get('search_term', None)
-    questions = Question.query.filter(Question.question.ilike('%'+search_term+'%')).all()
-    if questions is None:
-      abort(404)
-    else:
-      return jsonify({
-        'success' : True,
-        'search_questions' : [question.format() for question in questions]
-      })
+    questions = Question.query.order_by(Question.id).filter(Question.question.ilike('%{}%'.format(search_term))).all()
+    
+    return jsonify({
+      'success' : True,
+      'search_questions' : [question.format() for question in questions]
+    })
 
   '''
   @TODO: 
