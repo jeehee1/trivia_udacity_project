@@ -245,7 +245,7 @@ def create_app(test_config=None):
       'success' : True,
       'error' : 405,
       'message' : 'Method Not Allowed'
-    })
+    }), 405
 
   @app.errorhandler(422)
   def unprocessible(error):
@@ -253,7 +253,7 @@ def create_app(test_config=None):
       'success' : True,
       'error' : 422,
       'message' : 'Unprocessable'
-    })
+    }), 422
   
   @app.errorhandler(400)
   def bad_request(error):
@@ -261,7 +261,7 @@ def create_app(test_config=None):
       'success' : False,
       'error' : 400,
       'message' : 'Bad Request'
-    })
+    }), 400
 
   return app
 

@@ -28,7 +28,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.previous_questions_info={
             'current_category' : "2",
-            'previous_questions' : [41, 42, 43, 44, 45, 46, 47, 48]
+            'previous_questions' : [11, 12, 13, 14, 15, 16, 17, 18]
         }
 
         # binds the app to the current context
@@ -113,14 +113,15 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['questions']))
 
-    # def test_get_questions_randomly(self):
-    #     res = self.client().post('/questions/play', json=self.previous_questions_info)
-    #     data = json.loads(res.data)
+    def test_get_questions_randomly(self):
+        res = self.client().post('/questions/play', \
+            json=self.previous_questions_info)
+        data = json.loads(res.data)
 
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['success'], True)
-    #     self.assertTrue(len(data['previous_questions']))
-    #     self.assertTrue(len(data['selected_questions']))
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['previous_questions']))
+        self.assertTrue(len(data['questions_for_quiz']))
 
 
 
