@@ -207,7 +207,7 @@ def create_app(test_config=None):
     selected_questions =[]
 
     if len(questions)==0:
-      abort(404)
+      abort(422)
 
     for question in questions:
       if question.id not in previous_questions:
@@ -242,7 +242,7 @@ def create_app(test_config=None):
   @app.errorhandler(405)
   def method_not_allowed(error):
     return jsonify({
-      'success' : True,
+      'success' : False,
       'error' : 405,
       'message' : 'Method Not Allowed'
     }), 405
@@ -250,7 +250,7 @@ def create_app(test_config=None):
   @app.errorhandler(422)
   def unprocessible(error):
     return jsonify({
-      'success' : True,
+      'success' : False,
       'error' : 422,
       'message' : 'Unprocessable'
     }), 422
