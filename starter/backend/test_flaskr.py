@@ -21,7 +21,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.new_question = {
             'question' : 'What is it called the big clock building in london?',
-            'anser' : 'BigBen',
+            'answer' : 'BigBen',
             'category' : "4",
             'difficulty' : 1
         }
@@ -66,27 +66,30 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['categories']))
 
-    def test_delete_a_question_by_question_id(self):
-        res = self.client().delete('/questions/23')
-        data = json.loads(res.data)
-        question = Question.query.filter(Question.id==23).one_or_none()
-
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        # self.assertTrue(data['deleted_question'], 23)
-        self.assertEqual(question, None)
-
-    # def test_create_a_question(self):
-    #     res = self.client().post('/questions', json=self.new_question)
+    # def test_delete_a_question_by_question_id(self):
+    #     res = self.client().delete('/questions/23')
     #     data = json.loads(res.data)
+    #     question = Question.query.filter(Question.id==23).one_or_none()
 
     #     self.assertEqual(res.status_code, 200)
     #     self.assertEqual(data['success'], True)
-    #     self.assertTrue(data['question_id'])
-    #     self.assertTrue(data['question_category'])
+    #     self.assertTrue(data['deleted_question'], 23)
+    #     self.assertEqual(question, None)
 
-    # # def test_422_if_form_is_invalid(self):
-    # #     res = self.client().post('/questions', json)
+    def test_create_a_question(self):
+        res = self.client().post('/questions', json=self.new_question)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['question_id'])
+        self.assertTrue(data['question_category'])
+
+    # def test_422_if_form_is_invalid(self):
+    #     res = self.client().post('/questions', json)
+    #     data = json.loads(res.data)
+
+
 
     # def test_get_questions_by_search_term(self):
     #     res = self.client().post('/questions/search', json={'search_term':'first'})
