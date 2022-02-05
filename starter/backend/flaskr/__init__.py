@@ -59,16 +59,19 @@ def create_app(test_config=None):
   def get_question_list():
     question_selection = Question.query.order_by(Question.id).all()
     list_of_questions = paginate_question(request, question_selection)
-    categories = Category.query.order_by(Category.id).all()
-
+    categories = Category.query.all()
+    # category_list = {}
+    # for category in Category.query.order_by(Category.id).all():
+    #   category_list[category.id] = category.type
+  
     if len(list_of_questions) == 0:
       abort(404)
     else:
       return jsonify({
         'success' : True,
-        'list_of_questions' : list_of_questions,
+        'questions' : list_of_questions,
         'total_questions' : len(question_selection),
-        'current_category' : None,
+        # 'categories' : category_list
         'categories' : [category.format() for category in categories]
       })
 
