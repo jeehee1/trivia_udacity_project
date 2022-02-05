@@ -73,19 +73,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['deleted_question'], 23)
-        self.assertEqual(question, None)
 
-    def test_create_a_question(self):
+    def test_create_new_question(self):
         res = self.client().post('/questions', json=self.new_question)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(data['question_id'])
-        self.assertTrue(data['question_category'])
 
     def test_no_question_for_quiz(self):
-        res = self.client().post('/questions/play', json={'current_category' : '10'})
+        res = self.client().post('/quizzes', json={'quiz_category' : '10'})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
