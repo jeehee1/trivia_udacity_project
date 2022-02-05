@@ -150,6 +150,7 @@ def create_app(test_config=None):
           ('%{}%'.format(search_term))).all()
 
         return jsonify({
+          'success' : True,
           'questions' : paginate_question(request, questions),
           'total_question' : len(questions),
           'current_category' : None 
