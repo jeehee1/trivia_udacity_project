@@ -53,10 +53,9 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(len(data['list_of_questions']))
+        self.assertTrue(len(data['questions']))
         self.assertTrue(data['total_questions'])
         self.assertTrue(len(data['categories']))
-        self.assertEqual(data['current_category'], None)
 
     def test_get_categories(self):
         res = self.client().get('/categories')
